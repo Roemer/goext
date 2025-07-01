@@ -140,10 +140,16 @@ func (tp *TablePrinter) SetHeaders(headers ...string) {
 }
 
 // Add rows to the TablePrinter with the given values.
-func (tp *TablePrinter) AddRows(values ...[]string) {
-	for _, value := range values {
+func (tp *TablePrinter) AddRows(valueRows ...[]any) {
+	for _, valueRow := range valueRows {
+		// Convert each value to a string
+		valueRowStr := []string{}
+		for _, value := range valueRow {
+			valueRowStr = append(valueRowStr, fmt.Sprintf("%v", value))
+		}
+		// Create the row
 		newRow := &TablePrinterRow{
-			Values: value,
+			Values: valueRowStr,
 		}
 		tp.Rows = append(tp.Rows, newRow)
 	}

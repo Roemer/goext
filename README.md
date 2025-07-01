@@ -99,9 +99,9 @@ tablePrinter := goext.NewTablePrinter(nil)
 tablePrinter.SetHeaders("Id", "Name", "Age", "City")
 tablePrinter.Columns[0].ValueAlignment = goext.TABLE_PRINTER_ALIGNMENT_RIGHT
 tablePrinter.AddRows(
-    []string{"1", "Alice", "30", "New York"},
-    []string{"2", "Bob", "25", "Los Angeles"},
-    []string{"3", "Charlie", "35", "Chicago"},
+    []any{1, "Alice", "30", "New York"},
+    []any{2, "Bob", "25", "Los Angeles"},
+    []any{3, "Charlie", "35", "Chicago"},
 )
 tablePrinter.PrintStdout()
 /* Prints:
