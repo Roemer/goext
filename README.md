@@ -2,7 +2,7 @@
 
 Various small go extensions without dependencies.
 
-Feel free to includ this library or just copy the needed files or parts of them to your projects.
+Feel free to include this library or just copy the needed files or parts of them to your projects.
 
 Maps:
 - [MapSortedByKey](#mapsortedbykey)
