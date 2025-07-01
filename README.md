@@ -8,7 +8,9 @@ Strings:
 - [StringContainsAny](#stringcontainsany)
 
 Ternary:
-- [StringContainsAny](#stringcontainsany)
+- [Ternary](#ternary)
+- [TernaryFunc](#ternaryfunc)
+- [TernaryFuncErr](#ternaryfuncerr)
 
 ## Strings
 
@@ -29,7 +31,7 @@ value := Ternary(myCondition, "Value A", "Value B")
 ```
 
 ### TernaryFunc
-// Like Ternary but uses functions to lazily evaluate the values.
+Like Ternary but uses functions to lazily evaluate the values.
 ```go
 aFunc := func() string { return "Value A" }
 bFunc := func() string { return "Value B"}
@@ -37,7 +39,7 @@ value := TernaryFunc(myCondition, aFunc, bFunc)
 ```
 
 ### TernaryFuncErr
-// Like TernaryFunc but returns an error as well.
+Like TernaryFunc but returns an error as well.
 ```go
 aFunc := func() (string,error) { return "Value A", nil }
 bFunc := func() (string,error) { return "Value B", nil }
