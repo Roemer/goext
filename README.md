@@ -17,6 +17,9 @@ Slices:
 Strings:
 - [StringContainsAny](#stringcontainsany)
 
+TablePrinter:
+- [TablePrinter](#tableprinter)
+
 Ternary:
 - [Ternary](#ternary)
 - [TernaryFunc](#ternaryfunc)
@@ -44,7 +47,7 @@ for key, value := range goext.MapSortedByKey(myMap) {
 Appends the given values to a slice if the condition is fulfilled.
 ```go
 mySlice := []int{1, 2, 3}
-mySlice = SliceAppendIf(mySlice, myCondition, 4, 5)
+mySlice = goext.SliceAppendIf(mySlice, myCondition, 4, 5)
 ```
 
 ### SliceAppendIfFunc
@@ -52,14 +55,14 @@ Appends the given value if the condition is fulfilled. The value is lazily evalu
 ```go
 valueFunc := func() []int { return []int{4, 5} }
 mySlice := []int{1, 2, 3}
-mySlice = SliceAppendIfFunc(mySlice, myCondition, valueFunc)
+mySlice = goext.SliceAppendIfFunc(mySlice, myCondition, valueFunc)
 ```
 
 ### SlicePrepend
 Prepends the given elements to the given array.
 ```go
 mySlice := []int{1, 2, 3}
-mySlice = SlicePrepend(testSlice, 4, 5)
+mySlice = goext.SlicePrepend(testSlice, 4, 5)
 // [4, 5, 1, 2, 3]
 ```
 
@@ -67,7 +70,7 @@ mySlice = SlicePrepend(testSlice, 4, 5)
 Prepends the given values to a slice if the condition is fulfilled.
 ```go
 mySlice := []int{1, 2, 3}
-mySlice = SlicePrependIf(mySlice, myCondition, 4, 5)
+mySlice = goext.SlicePrependIf(mySlice, myCondition, 4, 5)
 ```
 
 ### SlicePrependIfFunc
@@ -75,7 +78,7 @@ Prepends the given value if the condition is fulfilled. The value is lazily eval
 ```go
 valueFunc := func() []int { return []int{4, 5} }
 mySlice := []int{1, 2, 3}
-mySlice = SlicePrependIfFunc(mySlice, myCondition, valueFunc)
+mySlice = goext.SlicePrependIfFunc(mySlice, myCondition, valueFunc)
 ```
 
 ## Strings
@@ -86,6 +89,30 @@ Checks if the string contains at least one of the substrings.
 goext.StringContainsAny("Hello", []string{"Hello", "World"})
 goext.StringContainsAny("World", []string{"Hello", "World"})
 // Both return true
+```
+
+## TablePrinter
+
+### Examples
+```go
+tablePrinter := goext.NewTablePrinter(nil)
+tablePrinter.SetHeaders("Id", "Name", "Age", "City")
+tablePrinter.Columns[0].ValueAlignment = goext.TABLE_PRINTER_ALIGNMENT_RIGHT
+tablePrinter.AddRows(
+    []string{"1", "Alice", "30", "New York"},
+    []string{"2", "Bob", "25", "Los Angeles"},
+    []string{"3", "Charlie", "35", "Chicago"},
+)
+tablePrinter.PrintStdout()
+/* Prints:
+┌──────┬───────────┬───────┬───────────────┐
+│  Id  │  Name     │  Age  │  City         │
+├──────┼───────────┼───────┼───────────────┤
+│   1  │  Alice    │  30   │  New York     │
+│   2  │  Bob      │  25   │  Los Angeles  │
+│   3  │  Charlie  │  35   │  Chicago      │
+└──────┴───────────┴───────┴───────────────┘
+*/
 ```
 
 ## Ternary
