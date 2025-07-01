@@ -86,8 +86,8 @@ mySlice = goext.SlicePrependIfFunc(mySlice, myCondition, valueFunc)
 ### StringContainsAny
 Checks if the string contains at least one of the substrings.
 ```go
-goext.StringContainsAny("Hello", []string{"Hello", "World"})
-goext.StringContainsAny("World", []string{"Hello", "World"})
+goext.StringContainsAny("Hello", "Hello", "World")
+goext.StringContainsAny("World", []string{"Hello", "World"}...)
 // Both return true
 ```
 
