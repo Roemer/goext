@@ -7,6 +7,14 @@ Feel free to include this library or just copy the needed files or parts of them
 Maps:
 - [MapSortedByKey](#mapsortedbykey)
 
+Run:
+- [Run](#run)
+- [RunCommand](#runcommand)
+- [RunGetOutput](#rungetoutput)
+- [RunCommandGetOutput](#runcommandgetoutput)
+- [RunGetCombinedOutput](#rungetcombinedoutput)
+- [RunCommandGetCombinedOutput](#runcommandgetcombinedoutput)
+
 Slices:
 - [SliceAppendIf](#sliceappendif)
 - [SliceAppendIfFunc](#sliceappendiffunc)
@@ -43,6 +51,51 @@ for key, value := range goext.MapSortedByKey(myMap) {
 // 1->b
 // 2->c
 // 3->d
+```
+
+## Run
+Allows running executable with arguments and various options.
+
+The following options are available:
+- RunWithArgs: Appends the given arguments to the command
+- RunWithWorkingDirectory: Runs the command in the given working directory
+- RunWithConsoleOutput: Outputs stdout to the console
+- RunWithSkipPostProcessOutput: Does not post-process the output (remove newlines)
+
+### Run
+Runs an executable with the given options.
+```go
+err := goext.Run("myapp", goext.RunWithArgs("arg1", "arg2"), goext.RunWithConsoleOutput(true))
+```
+
+### RunCommand
+Runs a command with the given options.
+```go
+err := goext.RunCommand(cmd, goext.RunWithArgs("additional"), goext.RunWithWorkingDirectory("/workspace/project"))
+```
+
+### RunGetOutput
+Runs an executable with the given options and returns the separate output from stdout and stderr.
+```go
+stdout, stderr, err := goext.RunGetOutput("myapp")
+```
+
+### RunCommandGetOutput
+Runs a command with the given options and returns the separate output from stdout and stderr.
+```go
+stdout, stderr, err := goext.RunCommandGetOutput(cmd)
+```
+
+### RunGetCombinedOutput
+Runs an executable with the given options and returns the output from stdout and stderr combined.
+```go
+output, err := goext.RunGetCombinedOutput("myapp")
+```
+
+### RunCommandGetCombinedOutput
+Runs a command with the given options and returns the output from stdout and stderr combined.
+```go
+output, err := goext.RunCommandGetCombinedOutput(cmd)
 ```
 
 ## Slices
