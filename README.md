@@ -16,6 +16,10 @@ Slices:
 
 Strings:
 - [StringContainsAny](#stringcontainsany)
+- [StringTrimAllPrefix](#stringtrimallprefix)
+- [StringTrimAllSuffix](#stringtrimallsuffix)
+- [StringTrimNewlineSuffix](#stringtrimnewlinesuffix)
+- [StringSplitByNewLine](#stringsplitbynewline)
 
 TablePrinter:
 - [TablePrinter](#tableprinter)
@@ -89,6 +93,30 @@ Checks if the string contains at least one of the substrings.
 goext.StringContainsAny("Hello", "Hello", "World")
 goext.StringContainsAny("World", []string{"Hello", "World"}...)
 // Both return true
+```
+
+### StringTrimAllPrefix
+Trims all occurrences of the given prefix from the start of the string.
+```go
+value := goext.StringTrimAllPrefix("xxxyyyxxx", "x")
+```
+
+### StringTrimAllSuffix
+Trims all occurrences of the given suffix from the end of the string.
+```go
+value := goext.StringTrimAllSuffix("xxxyyyxxx", "x")
+```
+
+### StringTrimNewlineSuffix
+Trims all occurrences of newline characters from the end of the string.
+```go
+value := goext.StringTrimNewlineSuffix("my-text\n\r\n")
+```
+
+### StringSplitByNewLine
+Splits the string by new line characters, supporting both "\n" and "\r\n".
+```go
+lines := goext.StringSplitByNewLine("line1\r\nline2\nline3")
 ```
 
 ## TablePrinter
