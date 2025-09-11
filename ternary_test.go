@@ -1,7 +1,7 @@
 package goext
 
 import (
-	"fmt"
+	"errors"
 	"testing"
 )
 
@@ -50,8 +50,8 @@ func TestTernaryFuncErr(t *testing.T) {
 
 	a := func() (string, error) { isACalled = true; return aValue, nil }
 	b := func() (string, error) { isBCalled = true; return bValue, nil }
-	aErr := func() (string, error) { isACalled = true; return aValue, fmt.Errorf(aErrMsg) }
-	bErr := func() (string, error) { isBCalled = true; return bValue, fmt.Errorf(bErrMsg) }
+	aErr := func() (string, error) { isACalled = true; return aValue, errors.New(aErrMsg) }
+	bErr := func() (string, error) { isBCalled = true; return bValue, errors.New(bErrMsg) }
 
 	isACalled = false
 	isBCalled = false
