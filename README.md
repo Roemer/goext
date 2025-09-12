@@ -4,16 +4,13 @@ Various small go extensions without dependencies.
 
 Feel free to include this library or just copy the needed files or parts of them to your projects.
 
+CommandRunner:
+- [Run](#run)
+- [RunGetOutput](#rungetoutput)
+- [RunGetCombinedOutput](#rungetcombinedoutput)
+
 Maps:
 - [MapSortedByKey](#mapsortedbykey)
-
-Run:
-- [Run](#run)
-- [RunCommand](#runcommand)
-- [RunGetOutput](#rungetoutput)
-- [RunCommandGetOutput](#runcommandgetoutput)
-- [RunGetCombinedOutput](#rungetcombinedoutput)
-- [RunCommandGetCombinedOutput](#runcommandgetcombinedoutput)
 
 Slices:
 - [SliceAppendIf](#sliceappendif)
@@ -53,49 +50,37 @@ for key, value := range goext.MapSortedByKey(myMap) {
 // 3->d
 ```
 
-## Run
+## CommandRunner
 Allows running executable with arguments and various options.
 
 The following options are available:
-- RunWithArgs: Appends the given arguments to the command
-- RunWithWorkingDirectory: Runs the command in the given working directory
-- RunWithConsoleOutput: Outputs stdout to the console
-- RunWithSkipPostProcessOutput: Does not post-process the output (remove newlines)
+- WorkingDirectory: Runs the command in the given working directory
+- OutputToConsole: Outputs stdout to the console
+- SkipPostProcessOutput: Does not post-process the output (remove newlines)
+- UseCurrentEnv
+- AdditionalEnv
 
-### Run
-Runs an executable with the given options.
+Usage is as follows:
 ```go
-err := goext.Run("myapp", goext.RunWithArgs("arg1", "arg2"), goext.RunWithConsoleOutput(true))
+err := goext.NewCmdRunner("cmd", "arg1", "arg2").With<...>.Run()
 ```
 
-### RunCommand
-Runs a command with the given options.
+### Run
+Runs the command with the given options.
 ```go
-err := goext.RunCommand(cmd, goext.RunWithArgs("additional"), goext.RunWithWorkingDirectory("/workspace/project"))
+err := goext.NewCmdRunner("myapp", "arg1", "arg2").Run()
 ```
 
 ### RunGetOutput
-Runs an executable with the given options and returns the separate output from stdout and stderr.
+Runs the command and returns the separate output from stdout and stderr.
 ```go
-stdout, stderr, err := goext.RunGetOutput("myapp")
-```
-
-### RunCommandGetOutput
-Runs a command with the given options and returns the separate output from stdout and stderr.
-```go
-stdout, stderr, err := goext.RunCommandGetOutput(cmd)
+stdout, stderr, err := goext.NewCmdRunner("myapp").RunGetOutput()
 ```
 
 ### RunGetCombinedOutput
-Runs an executable with the given options and returns the output from stdout and stderr combined.
+Runs the command and returns the output from stdout and stderr combined.
 ```go
-output, err := goext.RunGetCombinedOutput("myapp")
-```
-
-### RunCommandGetCombinedOutput
-Runs a command with the given options and returns the output from stdout and stderr combined.
-```go
-output, err := goext.RunCommandGetCombinedOutput(cmd)
+output, err := goext.NewCmdRunner("myapp").RunGetCombinedOutput()
 ```
 
 ## Slices
