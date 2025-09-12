@@ -12,6 +12,9 @@ CommandRunner:
 Maps:
 - [MapSortedByKey](#mapsortedbykey)
 
+Run:
+- TODO
+
 Slices:
 - [SliceAppendIf](#sliceappendif)
 - [SliceAppendIfFunc](#sliceappendiffunc)
@@ -33,22 +36,6 @@ Ternary:
 - [Ternary](#ternary)
 - [TernaryFunc](#ternaryfunc)
 - [TernaryFuncErr](#ternaryfuncerr)
-
-## Maps
-
-### MapSortedByKey
-Returns an iterator for the given map that yields the key-value pairs in sorted order.
-```go
-myMap := map[int]string{1: "b", 0: "a", 3: "d", 2: "c"}
-for key, value := range goext.MapSortedByKey(myMap) {
-    fmt.Printf("%d->%s\n", key, value)
-}
-// Always prints
-// 0->a
-// 1->b
-// 2->c
-// 3->d
-```
 
 ## CommandRunner
 Allows running executable with arguments and various options.
@@ -82,6 +69,25 @@ Runs the command and returns the output from stdout and stderr combined.
 ```go
 output, err := goext.NewCmdRunner("myapp").RunGetCombinedOutput()
 ```
+
+## Maps
+
+### MapSortedByKey
+Returns an iterator for the given map that yields the key-value pairs in sorted order.
+```go
+myMap := map[int]string{1: "b", 0: "a", 3: "d", 2: "c"}
+for key, value := range goext.MapSortedByKey(myMap) {
+    fmt.Printf("%d->%s\n", key, value)
+}
+// Always prints
+// 0->a
+// 1->b
+// 2->c
+// 3->d
+```
+
+## Run
+A runner for go functions with various options.
 
 ## Slices
 
