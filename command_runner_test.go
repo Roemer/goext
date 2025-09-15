@@ -3,7 +3,7 @@ package goext
 import "testing"
 
 func TestRun(t *testing.T) {
-	err := NewCmdRunner("where", "where").WithConsoleOutput().Run()
+	err := NewCmdRunner().WithConsoleOutput().Run("where", "where")
 	if err != nil {
 		t.Errorf("Expected no error but got %v", err)
 	}
@@ -11,7 +11,7 @@ func TestRun(t *testing.T) {
 
 func TestRunGetOutput(t *testing.T) {
 	// TODO: For linux, use whereis: /usr/bin/whereis
-	stdout, stderr, err := NewCmdRunner("where", "where").RunGetOutput()
+	stdout, stderr, err := NewCmdRunner().RunGetOutput("where", "where")
 	if err != nil {
 		t.Errorf("Expected no error but got %v", err)
 	}

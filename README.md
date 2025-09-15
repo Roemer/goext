@@ -44,30 +44,42 @@ The following options are available:
 - WorkingDirectory: Runs the command in the given working directory
 - OutputToConsole: Outputs stdout to the console
 - SkipPostProcessOutput: Does not post-process the output (remove newlines)
-- UseCurrentEnv
-- AdditionalEnv
+- UseCurrentEnv: Adds all current environment variables
+- AdditionalEnv: Specify addional environment variables that should be set
+
+Runners can be configured with setting the properties or by using `With...` methods in a fluent manner.
+
+You can create and configure a runner and re-use it to run multiple commands.
+
+There are also a few pre-defined runners available that can be used as follows:
+```go
+// Default runner with no options
+goext.CmdRunners.Default.Run("cmd", "arg1")
+// Runner that outputs to the console
+goext.CmdRunners.Console.Run("cmd", "arg1")
+```
 
 Usage is as follows:
 ```go
-err := goext.NewCmdRunner("cmd", "arg1", "arg2").With<...>.Run()
+err := goext.NewCmdRunner().With<...>.Run("cmd", "arg1", "arg2")
 ```
 
 ### Run
 Runs the command with the given options.
 ```go
-err := goext.NewCmdRunner("myapp", "arg1", "arg2").Run()
+err := goext.NewCmdRunner().Run("myapp", "arg1", "arg2")
 ```
 
 ### RunGetOutput
 Runs the command and returns the separate output from stdout and stderr.
 ```go
-stdout, stderr, err := goext.NewCmdRunner("myapp").RunGetOutput()
+stdout, stderr, err := goext.NewCmdRunner().RunGetOutput("myapp")
 ```
 
 ### RunGetCombinedOutput
 Runs the command and returns the output from stdout and stderr combined.
 ```go
-output, err := goext.NewCmdRunner("myapp").RunGetCombinedOutput()
+output, err := goext.NewCmdRunner().RunGetCombinedOutput("myapp")
 ```
 
 ## Maps
