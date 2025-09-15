@@ -9,6 +9,11 @@ CommandRunner:
 - [RunGetOutput](#rungetoutput)
 - [RunGetCombinedOutput](#rungetcombinedoutput)
 
+[Files](#files):
+- [CopyFile](#files-copyfile)
+- [FileExists](#files-fileexists)
+- [WriteJsonToFile](#files-writejsontofile)
+
 Maps:
 - [MapSortedByKey](#mapsortedbykey)
 
@@ -86,6 +91,17 @@ Runs the command and returns the output from stdout and stderr combined.
 ```go
 output, err := goext.NewCmdRunner().RunGetCombinedOutput("myapp")
 ```
+
+## <a name="files"></a>Files
+
+### <a name="files-copyfile"></a>CopyFile
+Copies a file copy from source to destination.
+
+### <a name="files-fileexists"></a>FileExists
+Checks if a file exists (and it is not a directory).
+
+### <a name="files-writejsontofile"></a>WriteJsonToFile
+Writes the given object into a file.
 
 ## Maps
 
