@@ -5,7 +5,10 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"regexp"
 )
+
+var argumentsRegex = regexp.MustCompile(`[^\s"]+|"((\\"|[^"])*)"`)
 
 type cmdRunners struct {
 	Default *CmdRunner
@@ -138,6 +141,11 @@ func (r *CmdRunner) Clone() *CmdRunner {
 		clone.AdditionalEnv[k] = v
 	}
 	return clone
+}
+
+// Splits command line arguments into a slice of strings, respecting quoted substrings.
+func SplitCmdArgs(arguments string) []string {
+	return argumentsRegex.FindAllString(arguments, -1)
 }
 
 ////////////////////////////////////////////////////////////

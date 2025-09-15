@@ -59,6 +59,11 @@ goext.CmdRunners.Default.Run("cmd", "arg1")
 goext.CmdRunners.Console.Run("cmd", "arg1")
 ```
 
+Usually, each argument is passed as its own value. If you have a string with all arguments, you can use the following so split the arguments:
+```go
+goext.CmdRunners.Console.Run("cmd", goext.SplitCmdArgs("arg1 arg2")...)
+```
+
 Usage is as follows:
 ```go
 err := goext.NewCmdRunner().With<...>.Run("cmd", "arg1", "arg2")
