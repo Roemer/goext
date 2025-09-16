@@ -9,6 +9,10 @@ CommandRunner:
 - [RunGetOutput](#rungetoutput)
 - [RunGetCombinedOutput](#rungetcombinedoutput)
 
+[Env](#env):
+- [Exists](#env-exists)
+- [ValueOrDefault](#env-valueordefault)
+
 [Files](#files):
 - [CopyFile](#files-copyfile)
 - [FileExists](#files-fileexists)
@@ -90,6 +94,20 @@ stdout, stderr, err := goext.NewCmdRunner().RunGetOutput("myapp")
 Runs the command and returns the output from stdout and stderr combined.
 ```go
 output, err := goext.NewCmdRunner().RunGetCombinedOutput("myapp")
+```
+
+## <a name="Env"></a>Env
+
+### <a name="env-exists"></a>Exists
+Checks if the given environment variable exists or not.
+```go
+exists := goext.Env.Exists("MY_VAR")
+```
+
+### <a name="env-valueordefault"></a>ValueOrDefault
+Returns the value if the environment variable exists or the default otherwise.
+```go
+value, exists := goext.Env.ValueOrDefault("MY_VAR", "default")
 ```
 
 ## <a name="files"></a>Files
