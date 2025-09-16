@@ -11,15 +11,15 @@ import (
 var argumentsRegex = regexp.MustCompile(`[^\s"]+|"((\\"|[^"])*)"`)
 
 type cmdRunners struct {
+	// A default runner with no special options set.
 	Default *CmdRunner
+	// A runner that outputs to the console.
 	Console *CmdRunner
 }
 
 // Contains a few pre-configured CmdRunners for easy access.
 var CmdRunners cmdRunners = cmdRunners{
-	// A default runner with no special options set.
 	Default: NewCmdRunner(),
-	// A runner that outputs to the console.
 	Console: NewCmdRunner().WithConsoleOutput(),
 }
 

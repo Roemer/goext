@@ -4,10 +4,10 @@ Various small go extensions without dependencies.
 
 Feel free to include this library or just copy the needed files or parts of them to your projects.
 
-CommandRunner:
-- [Run](#run)
-- [RunGetOutput](#rungetoutput)
-- [RunGetCombinedOutput](#rungetcombinedoutput)
+[CommandRunner](#commandrunner):
+- [Run](#commandrunner-run)
+- [RunGetOutput](#commandrunner-rungetoutput)
+- [RunGetCombinedOutput](#commandrunner-rungetcombinedoutput)
 
 [Env](#env):
 - [Exists](#env-exists)
@@ -46,7 +46,7 @@ Ternary:
 - [TernaryFunc](#ternaryfunc)
 - [TernaryFuncErr](#ternaryfuncerr)
 
-## CommandRunner
+## <a name="commandrunner"></a>CommandRunner
 Allows running executable with arguments and various options.
 
 The following options are available:
@@ -78,25 +78,25 @@ Usage is as follows:
 err := goext.NewCmdRunner().With<...>.Run("cmd", "arg1", "arg2")
 ```
 
-### Run
+### <a name="commandrunner-run">Run
 Runs the command with the given options.
 ```go
 err := goext.NewCmdRunner().Run("myapp", "arg1", "arg2")
 ```
 
-### RunGetOutput
+### <a name="commandrunner-rungetoutput">RunGetOutput
 Runs the command and returns the separate output from stdout and stderr.
 ```go
 stdout, stderr, err := goext.NewCmdRunner().RunGetOutput("myapp")
 ```
 
-### RunGetCombinedOutput
+### <a name="commandrunner-rungetcombinedoutput">RunGetCombinedOutput
 Runs the command and returns the output from stdout and stderr combined.
 ```go
 output, err := goext.NewCmdRunner().RunGetCombinedOutput("myapp")
 ```
 
-## <a name="Env"></a>Env
+## <a name="env"></a>Env
 
 ### <a name="env-exists"></a>Exists
 Checks if the given environment variable exists or not.
