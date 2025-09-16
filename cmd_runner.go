@@ -3,12 +3,10 @@ package goext
 import (
 	"bytes"
 	"io"
+	"maps"
 	"os"
 	"os/exec"
-	"regexp"
 )
-
-var argumentsRegex = regexp.MustCompile(`[^\s"]+|"((\\"|[^"])*)"`)
 
 type cmdRunners struct {
 	// A default runner with no special options set.
@@ -28,7 +26,6 @@ type CmdRunner struct {
 	WorkingDirectory      string
 	OutputToConsole       bool
 	SkipPostProcessOutput bool
-	UseCurrentEnv         bool
 	AdditionalEnv         map[string]string
 }
 
@@ -112,13 +109,6 @@ func (r *CmdRunner) WithSkipPostProcessOutput() *CmdRunner {
 	return clone
 }
 
-// Adds the current environment variables to the command.
-func (r *CmdRunner) WithCurrentEnvironment() *CmdRunner {
-	clone := r.Clone()
-	clone.UseCurrentEnv = true
-	return clone
-}
-
 // Adds an environment variable to the command.
 func (r *CmdRunner) WithEnv(key, value string) *CmdRunner {
 	clone := r.Clone()
@@ -135,17 +125,9 @@ func (r *CmdRunner) Clone() *CmdRunner {
 	clone.WorkingDirectory = r.WorkingDirectory
 	clone.OutputToConsole = r.OutputToConsole
 	clone.SkipPostProcessOutput = r.SkipPostProcessOutput
-	clone.UseCurrentEnv = r.UseCurrentEnv
 	clone.AdditionalEnv = make(map[string]string)
-	for k, v := range r.AdditionalEnv {
-		clone.AdditionalEnv[k] = v
-	}
+	maps.Copy(clone.AdditionalEnv, r.AdditionalEnv)
 	return clone
-}
-
-// Splits command line arguments into a slice of strings, respecting quoted substrings.
-func SplitCmdArgs(arguments string) []string {
-	return argumentsRegex.FindAllString(arguments, -1)
 }
 
 ////////////////////////////////////////////////////////////
@@ -154,12 +136,18 @@ func SplitCmdArgs(arguments string) []string {
 
 func (r *CmdRunner) asCmd(executable string, arguments ...string) *exec.Cmd {
 	cmd := exec.Command(executable, arguments...)
-	cmd.Dir = r.WorkingDirectory
-	if r.UseCurrentEnv {
-		cmd.Env = os.Environ()
+	// Set the working directory
+	if r.WorkingDirectory != "" {
+		cmd.Dir = r.WorkingDirectory
 	}
-	for k, v := range r.AdditionalEnv {
-		cmd.Env = append(cmd.Env, k+"="+v)
+	// Set the additonal environment variables
+	if len(r.AdditionalEnv) > 0 {
+		// Make sure to add the current environment variables first
+		cmd.Env = os.Environ()
+		// Then add the additional ones
+		for k, v := range r.AdditionalEnv {
+			cmd.Env = append(cmd.Env, k+"="+v)
+		}
 	}
 	return cmd
 }

@@ -9,6 +9,10 @@ Feel free to include this library or just copy the needed files or parts of them
 - [RunGetOutput](#commandrunner-rungetoutput)
 - [RunGetCombinedOutput](#commandrunner-rungetcombinedoutput)
 
+[Cmd](#cmd):
+- [SplitArgs](#cmd-splitarags)
+- [ErrorExitCode](#cmd-errorexitcode)
+
 [Env](#env):
 - [Exists](#env-exists)
 - [ValueOrDefault](#env-valueordefault)
@@ -53,7 +57,6 @@ The following options are available:
 - WorkingDirectory: Runs the command in the given working directory
 - OutputToConsole: Outputs stdout to the console
 - SkipPostProcessOutput: Does not post-process the output (remove newlines)
-- UseCurrentEnv: Adds all current environment variables
 - AdditionalEnv: Specify addional environment variables that should be set
 
 Runners can be configured with setting the properties or by using `With...` methods in a fluent manner.
@@ -70,7 +73,7 @@ goext.CmdRunners.Console.Run("cmd", "arg1")
 
 Usually, each argument is passed as its own value. If you have a string with all arguments, you can use the following so split the arguments:
 ```go
-goext.CmdRunners.Console.Run("cmd", goext.SplitCmdArgs("arg1 arg2")...)
+goext.CmdRunners.Console.Run("cmd", goext.Cmd.SplitArgs("arg1 arg2")...)
 ```
 
 Usage is as follows:
@@ -94,6 +97,19 @@ stdout, stderr, err := goext.NewCmdRunner().RunGetOutput("myapp")
 Runs the command and returns the output from stdout and stderr combined.
 ```go
 output, err := goext.NewCmdRunner().RunGetCombinedOutput("myapp")
+```
+
+## <a name="cmd"></a>Cmd
+
+### <a name="cmd-splitargs"></a>SplitArgs
+```go
+args := goext.Cmd.SplitArgs("arg1 arg2")
+```
+
+### <a name="cmd-errorexitcode"></a>ErrorExitCode
+```go
+err := <execute cmd>
+exitCode := goext.Cmd.ErrorExitCode(err)
 ```
 
 ## <a name="env"></a>Env
