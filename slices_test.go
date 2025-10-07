@@ -32,6 +32,35 @@ func TestSliceAppendIfFunc(t *testing.T) {
 	}
 }
 
+func TestSliceAppendIfMissing(t *testing.T) {
+	testSlice := []int{1, 2, 3}
+	testSlice = SliceAppendIfMissing(testSlice, 3, 4)
+	if len(testSlice) != 4 || testSlice[3] != 4 {
+		t.Errorf("Expected slice to be [1, 2, 3, 4], got %v", testSlice)
+	}
+
+	testSlice = SliceAppendIfMissing(testSlice, 2, 3)
+	if len(testSlice) != 4 || testSlice[3] != 4 {
+		t.Errorf("Expected slice to remain [1, 2, 3, 4], got %v", testSlice)
+	}
+}
+
+func TestSliceAppendIfMissingFunc(t *testing.T) {
+	testSlice := []int{1, 2, 3}
+	f1 := func() []int { return []int{3, 4} }
+	f2 := func() []int { return []int{2, 3} }
+
+	testSlice = SliceAppendIfMissingFunc(testSlice, f1)
+	if len(testSlice) != 4 || testSlice[3] != 4 {
+		t.Errorf("Expected slice to be [1, 2, 3, 4], got %v", testSlice)
+	}
+
+	testSlice = SliceAppendIfMissingFunc(testSlice, f2)
+	if len(testSlice) != 4 || testSlice[3] != 4 {
+		t.Errorf("Expected slice to remain [1, 2, 3, 4], got %v", testSlice)
+	}
+}
+
 func TestSlicePrepend(t *testing.T) {
 	testSlice := []int{1, 2, 3}
 

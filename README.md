@@ -31,6 +31,8 @@ Run:
 Slices:
 - [SliceAppendIf](#sliceappendif)
 - [SliceAppendIfFunc](#sliceappendiffunc)
+- [SliceAppendIfMissing](#sliceappendifmissing)
+- [SliceAppendIfMissingFunc](#sliceappendifmissingfunc)
 - [SlicePrepend](#sliceprepend)
 - [SlicePrependIf](#sliceprependif)
 - [SlicePrependIfFunc](#sliceprependiffunc)
@@ -171,6 +173,21 @@ Appends the given value if the condition is fulfilled. The value is lazily evalu
 valueFunc := func() []int { return []int{4, 5} }
 mySlice := []int{1, 2, 3}
 mySlice = goext.SliceAppendIfFunc(mySlice, myCondition, valueFunc)
+```
+
+### SliceAppendIfMissing
+Appends the given elements if it is missing in the slice.
+```go
+mySlice := []int{1, 2, 3}
+mySlice = goext.SliceAppendIfMissing(mySlice, 3, 4)
+```
+
+### SliceAppendIfMissingFunc
+Appends the given elements if it is missing in the slice. The value is lazily evaluated.
+```go
+valueFunc := func() []int { return []int{3, 4} }
+mySlice := []int{1, 2, 3}
+mySlice = goext.SliceAppendIfMissingFunc(mySlice, valueFunc)
 ```
 
 ### SlicePrepend
