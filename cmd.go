@@ -14,8 +14,12 @@ type cmdNamespace int
 var Cmd cmdNamespace = 0
 
 // Splits command line arguments into a slice of strings, respecting quoted substrings.
-func (cmdNamespace) SplitArgs(arguments string) []string {
-	return argumentsRegex.FindAllString(arguments, -1)
+func (cmdNamespace) SplitArgs(arguments ...string) []string {
+	finalArgs := []string{}
+	for _, args := range arguments {
+		finalArgs = append(finalArgs, argumentsRegex.FindAllString(args, -1)...)
+	}
+	return finalArgs
 }
 
 // Gets the exit code from a command error.
