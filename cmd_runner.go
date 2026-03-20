@@ -95,27 +95,39 @@ func (r *CmdRunner) WithWorkingDirectory(workingDirectory string) *CmdRunner {
 	return clone
 }
 
-// Sets to output to console.
+// Enables output to console.
 func (r *CmdRunner) WithConsoleOutput() *CmdRunner {
+	return r.SetConsoleOutput(true)
+}
+
+// Sets output to console.
+func (r *CmdRunner) SetConsoleOutput(outputToConsole bool) *CmdRunner {
 	clone := r.Clone()
-	clone.OutputToConsole = true
+	clone.OutputToConsole = outputToConsole
 	return clone
 }
 
-// Sets to skip post-processing of output (trimming newlines).
+// Enables skipping post-processing of output (trimming newlines).
 func (r *CmdRunner) WithSkipPostProcessOutput() *CmdRunner {
+	return r.SetSkipPostProcessOutput(true)
+}
+
+// Sets skipping post-processing of output (trimming newlines).
+func (r *CmdRunner) SetSkipPostProcessOutput(skipPostProcessOutput bool) *CmdRunner {
 	clone := r.Clone()
-	clone.SkipPostProcessOutput = true
+	clone.SkipPostProcessOutput = skipPostProcessOutput
 	return clone
 }
 
 // Adds an environment variable to the command.
 func (r *CmdRunner) WithEnv(key, value string) *CmdRunner {
+	return r.WithEnvs(map[string]string{key: value})
+}
+
+// Adds multiple environment variable to the command.
+func (r *CmdRunner) WithEnvs(envs map[string]string) *CmdRunner {
 	clone := r.Clone()
-	if clone.AdditionalEnv == nil {
-		clone.AdditionalEnv = make(map[string]string)
-	}
-	clone.AdditionalEnv[key] = value
+	maps.Copy(clone.AdditionalEnv, envs)
 	return clone
 }
 

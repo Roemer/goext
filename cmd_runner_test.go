@@ -48,3 +48,28 @@ func TestCmdRunnerWith(t *testing.T) {
 		t.Errorf("Expected output to be %q but got %q", "world", output)
 	}
 }
+
+func TestCmdRunnerWithSystemAndSpecificEnv(t *testing.T) {
+	os.Setenv("SYTEM_VAR", "hello")
+	runner := NewCmdRunner().WithEnv("HELLO_VAR", "world")
+	output, err := runner.RunGetCombinedOutput("cmd", "/C", `echo %SYTEM_VAR% %HELLO_VAR%`)
+	if err != nil {
+		t.Errorf("Expected no error but got %v", err)
+	}
+	if output != "hello world" {
+		t.Errorf("Expected output to be %q but got %q", "hello world", output)
+	}
+}
+
+func TestCmdRunnerWithSystemEnvOnly(t *testing.T) {
+	os.Setenv("SYTEM_VAR", "hello world")
+	runner := NewCmdRunner()
+	output, err := runner.RunGetCombinedOutput("cmd", "/C", `echo %SYTEM_VAR%`)
+	//output, err := runner.RunGetCombinedOutput("powershell", "-Command", "Write-Host $env:SYTEM_VAR")
+	if err != nil {
+		t.Errorf("Expected no error but got %v", err)
+	}
+	if output != "hello world" {
+		t.Errorf("Expected output to be %q but got %q", "hello world", output)
+	}
+}
