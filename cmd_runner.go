@@ -42,17 +42,18 @@ func NewCmdRunner() *CmdRunner {
 func (r *CmdRunner) Run(executable string, arguments ...string) error {
 	cmd := r.asCmd(executable, arguments...)
 
+	logFile, cleanup, err := r.openLogFile()
+	if err != nil {
+		return err
+	}
+	defer cleanup()
+
 	var stdoutWriters, stderrWriters []io.Writer
 	if r.OutputToConsole {
 		stdoutWriters = append(stdoutWriters, os.Stdout)
 		stderrWriters = append(stderrWriters, os.Stderr)
 	}
-	if r.LogFilePath != "" {
-		logFile, err := os.OpenFile(r.LogFilePath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
-		if err != nil {
-			return err
-		}
-		defer logFile.Close()
+	if logFile != nil {
 		stdoutWriters = append(stdoutWriters, logFile)
 		stderrWriters = append(stderrWriters, logFile)
 	}
@@ -69,18 +70,19 @@ func (r *CmdRunner) Run(executable string, arguments ...string) error {
 func (r *CmdRunner) RunGetOutput(executable string, arguments ...string) (string, string, error) {
 	cmd := r.asCmd(executable, arguments...)
 
+	logFile, cleanup, err := r.openLogFile()
+	if err != nil {
+		return "", "", err
+	}
+	defer cleanup()
+
 	var stdoutBuf, stderrBuf bytes.Buffer
 	var stdoutWriters, stderrWriters []io.Writer
 	if r.OutputToConsole {
 		stdoutWriters = append(stdoutWriters, os.Stdout)
 		stderrWriters = append(stderrWriters, os.Stderr)
 	}
-	if r.LogFilePath != "" {
-		logFile, err := os.OpenFile(r.LogFilePath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
-		if err != nil {
-			return "", "", err
-		}
-		defer logFile.Close()
+	if logFile != nil {
 		stdoutWriters = append(stdoutWriters, logFile)
 		stderrWriters = append(stderrWriters, logFile)
 	}
@@ -89,7 +91,7 @@ func (r *CmdRunner) RunGetOutput(executable string, arguments ...string) (string
 	cmd.Stdout = io.MultiWriter(stdoutWriters...)
 	cmd.Stderr = io.MultiWriter(stderrWriters...)
 
-	err := cmd.Run()
+	err = cmd.Run()
 	if r.SkipPostProcessOutput {
 		return stdoutBuf.String(), stderrBuf.String(), err
 	}
@@ -100,17 +102,18 @@ func (r *CmdRunner) RunGetOutput(executable string, arguments ...string) (string
 func (r *CmdRunner) RunGetCombinedOutput(executable string, arguments ...string) (string, error) {
 	cmd := r.asCmd(executable, arguments...)
 
+	logFile, cleanup, err := r.openLogFile()
+	if err != nil {
+		return "", err
+	}
+	defer cleanup()
+
 	var outBuf bytes.Buffer
 	var writers []io.Writer
 	if r.OutputToConsole {
 		writers = append(writers, os.Stdout)
 	}
-	if r.LogFilePath != "" {
-		logFile, err := os.OpenFile(r.LogFilePath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
-		if err != nil {
-			return "", err
-		}
-		defer logFile.Close()
+	if logFile != nil {
 		writers = append(writers, logFile)
 	}
 	writers = append(writers, &outBuf)
@@ -118,7 +121,7 @@ func (r *CmdRunner) RunGetCombinedOutput(executable string, arguments ...string)
 	cmd.Stdout = combined
 	cmd.Stderr = combined
 
-	err := cmd.Run()
+	err = cmd.Run()
 	if r.SkipPostProcessOutput {
 		return outBuf.String(), err
 	}
@@ -190,6 +193,17 @@ func (r *CmdRunner) Clone() *CmdRunner {
 ////////////////////////////////////////////////////////////
 // Internal
 ////////////////////////////////////////////////////////////
+
+func (r *CmdRunner) openLogFile() (*os.File, func(), error) {
+	if r.LogFilePath == "" {
+		return nil, func() {}, nil
+	}
+	logFile, err := os.OpenFile(r.LogFilePath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
+	if err != nil {
+		return nil, func() {}, err
+	}
+	return logFile, func() { _ = logFile.Close() }, nil
+}
 
 func (r *CmdRunner) asCmd(executable string, arguments ...string) *exec.Cmd {
 	cmd := exec.Command(executable, arguments...)
