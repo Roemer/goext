@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"slices"
 )
 
 type cmdRunners struct {
@@ -164,6 +165,10 @@ func (r *CmdRunner) Clone() *CmdRunner {
 ////////////////////////////////////////////////////////////
 
 func (r *CmdRunner) asCmd(executable string, arguments ...string) *exec.Cmd {
+	// Remove empty arguments that might cause issues on some platforms (e.g. Windows)
+	arguments = slices.DeleteFunc(arguments, func(arg string) bool {
+		return arg == ""
+	})
 	cmd := exec.Command(executable, arguments...)
 	// Set the working directory
 	if r.WorkingDirectory != "" {
