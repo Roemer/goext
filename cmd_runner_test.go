@@ -73,3 +73,63 @@ func TestCmdRunnerWithSystemEnvOnly(t *testing.T) {
 		t.Errorf("Expected output to be %q but got %q", "hello world", output)
 	}
 }
+
+func TestCmdRunnerWithFileOutput(t *testing.T) {
+	logFilePath := "test_output.log"
+	defer os.Remove(logFilePath)
+	runner := NewCmdRunner().WithLogFile(logFilePath)
+	err := runner.Run("cmd", "/C", "echo Hello File Output")
+	if err != nil {
+		t.Errorf("Expected no error but got %v", err)
+	}
+	logContent, err := os.ReadFile(logFilePath)
+	if err != nil {
+		t.Errorf("Expected no error but got %v", err)
+	}
+	if strings.TrimSpace(string(logContent)) != strings.TrimSpace("Hello File Output") {
+		t.Errorf("Expected log content to be %q but got %q", "Hello File Output", string(logContent))
+	}
+}
+
+func TestCmdRunnerWithFileAndCombinedOutput(t *testing.T) {
+	logFilePath := "test_output.log"
+	defer os.Remove(logFilePath)
+	runner := NewCmdRunner().WithLogFile(logFilePath)
+	output, err := runner.RunGetCombinedOutput("cmd", "/C", "echo Hello File Output")
+	if err != nil {
+		t.Errorf("Expected no error but got %v", err)
+	}
+	if output != "Hello File Output" {
+		t.Errorf("Expected output to be %q but got %q", "Hello File Output", output)
+	}
+	logContent, err := os.ReadFile(logFilePath)
+	if err != nil {
+		t.Errorf("Expected no error but got %v", err)
+	}
+	if strings.TrimSpace(string(logContent)) != strings.TrimSpace("Hello File Output") {
+		t.Errorf("Expected log content to be %q but got %q", "Hello File Output", string(logContent))
+	}
+}
+
+func TestCmdRunnerWithFileAndSeparateOutput(t *testing.T) {
+	logFilePath := "test_output.log"
+	defer os.Remove(logFilePath)
+	runner := NewCmdRunner().WithLogFile(logFilePath)
+	stdout, stderr, err := runner.RunGetOutput("cmd", "/C", "echo Hello File Output")
+	if err != nil {
+		t.Errorf("Expected no error but got %v", err)
+	}
+	if stdout != "Hello File Output" {
+		t.Errorf("Expected stdout to be %q but got %q", "Hello File Output", stdout)
+	}
+	if stderr != "" {
+		t.Errorf("Expected no stderr but got %q", stderr)
+	}
+	logContent, err := os.ReadFile(logFilePath)
+	if err != nil {
+		t.Errorf("Expected no error but got %v", err)
+	}
+	if strings.TrimSpace(string(logContent)) != strings.TrimSpace("Hello File Output") {
+		t.Errorf("Expected log content to be %q but got %q", "Hello File Output", string(logContent))
+	}
+}

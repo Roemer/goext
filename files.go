@@ -4,20 +4,28 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"path/filepath"
 )
 
 // Copies a file copy from source to destination.
 func CopyFile(src string, dst string) (int64, error) {
+	// Make sure the destination directory exists
+	if err := os.MkdirAll(filepath.Dir(dst), os.ModePerm); err != nil {
+		return -1, err
+	}
+	// Open the source
 	srcFile, err := os.Open(src)
 	if err != nil {
 		return -1, err
 	}
 	defer srcFile.Close()
+	// Open the destination
 	dstFile, err := os.Create(dst)
 	if err != nil {
 		return -1, err
 	}
 	defer dstFile.Close()
+	// Copy the file
 	return dstFile.ReadFrom(srcFile)
 }
 
