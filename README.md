@@ -60,6 +60,7 @@ The following options are available:
 - OutputToConsole: Outputs stdout to the console
 - SkipPostProcessOutput: Does not post-process the output (remove newlines)
 - AdditionalEnv: Specify addional environment variables that should be set
+- LogFilePath: Specify a path to a file where the output will be written to
 
 Runners can be configured with setting the properties or by using `With...` methods in a fluent manner.
 
