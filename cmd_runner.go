@@ -204,7 +204,7 @@ func (r *CmdRunner) prepareWriters(stdoutBuf, stderrBuf *bytes.Buffer) (stdoutWr
 		if err := os.MkdirAll(filepath.Dir(r.LogFilePath), os.ModePerm); err != nil {
 			return nil, nil, nil, err
 		}
-		logFile, err := os.OpenFile(r.LogFilePath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
+		logFile, err := os.OpenFile(r.LogFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 		if err != nil {
 			return nil, nil, nil, err
 		}
